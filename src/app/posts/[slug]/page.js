@@ -52,7 +52,12 @@ const PagePost = ({ params }) => {
     <div>
       {post && (
         <>
-          <CardPost post={post} rating={postRating?.rating} />
+          <CardPost
+            post={post}
+            rating={postRating?.rating}
+            category={postRating?.category}
+            highlight={true}
+          />
           <h3 className={styles.subtitle}>Código:</h3>
           <div className={styles.code}>
             <div dangerouslySetInnerHTML={{ __html: post.markdown }} />

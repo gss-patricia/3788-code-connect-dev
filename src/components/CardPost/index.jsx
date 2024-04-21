@@ -8,7 +8,7 @@ import Link from "next/link";
 import { ThumbsUpButton } from "./ThumbsUpButton";
 import { ModalComment } from "../ModalComment";
 
-export const CardPost = ({ post, highlight, rating }) => {
+export const CardPost = ({ post, highlight, rating, category }) => {
   // Mutation for liking a post
   const thumbsMutation = useMutation({
     mutationFn: (postData) => {
@@ -77,6 +77,12 @@ export const CardPost = ({ post, highlight, rating }) => {
             </div>
           )}
         </div>
+        {category && (
+          <div className={styles.categoryWrapper}>
+            <span className={styles.label}>Categoria: </span>{" "}
+            <span className={styles.category}>{category}</span>
+          </div>
+        )}
         <Avatar imageSrc={post.author.avatar} name={post.author.username} />
       </footer>
     </article>
