@@ -11,6 +11,14 @@ const fetchPostBySlug = async ({ slug }) => {
   return data;
 };
 
+const fetchPostRating = async ({ postId }) => {
+  const results = await fetch(
+    `http://localhost:3000/api/post?postId=${postId}`
+  );
+  const data = await results.json();
+  return data;
+};
+
 const PagePost = ({ params }) => {
   const { slug } = params;
 
@@ -22,6 +30,13 @@ const PagePost = ({ params }) => {
   } = useQuery({
     queryKey: ["post", slug],
     queryFn: () => fetchPostBySlug({ slug }),
+  });
+
+  const { data: postRating } = useQuery({
+    queryKey: ["postRating", post?.id],
+    queryFn: () => fetchPostRating({ postId: post?.id }),
+    // A consulta não será executada até que o userId exista
+    enabled: !!post?.id,
   });
 
   if (isLoading) {
@@ -37,7 +52,7 @@ const PagePost = ({ params }) => {
     <div>
       {post && (
         <>
-          <CardPost post={post} highlight />
+          <CardPost post={post} rating={postRating?.rating} />
           <h3 className={styles.subtitle}>Código:</h3>
           <div className={styles.code}>
             <div dangerouslySetInnerHTML={{ __html: post.markdown }} />

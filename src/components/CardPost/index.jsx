@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { Avatar } from "../Avatar";
+import { Star } from "../icons/Star";
 import styles from "./cardpost.module.css";
 import Link from "next/link";
 
 import { ThumbsUpButton } from "./ThumbsUpButton";
 import { ModalComment } from "../ModalComment";
 
-export const CardPost = ({ post, highlight }) => {
+export const CardPost = ({ post, highlight, rating }) => {
   // Mutation for liking a post
   const thumbsMutation = useMutation({
     mutationFn: (postData) => {
@@ -69,6 +70,12 @@ export const CardPost = ({ post, highlight }) => {
             <ModalComment onSubmit={onSubmitComment} />
             <p>{post.comments.length}</p>
           </div>
+          {rating && (
+            <div style={{ margin: "0 2px" }}>
+              <Star />
+              <p>{rating}</p>
+            </div>
+          )}
         </div>
         <Avatar imageSrc={post.author.avatar} name={post.author.username} />
       </footer>
