@@ -78,7 +78,10 @@ export const CardPost = ({ post, highlight, rating, category }) => {
           )}
         </div>
         {category && (
-          <div className={styles.categoryWrapper}>
+          <div
+            className={styles.categoryWrapper}
+            style={{ fontSize: highlight ? "15px" : "12px" }}
+          >
             <span className={styles.label}>Categoria: </span>{" "}
             <span className={styles.category}>{category}</span>
           </div>
