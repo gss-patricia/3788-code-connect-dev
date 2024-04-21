@@ -11,11 +11,11 @@ export const Replies = ({ comment }) => {
 
   const {
     data: replies,
-    isLoading,
+    isPending,
     error,
   } = useFetchReplies(showReplies ? comment.id : null); // passar o showReplies para o enabled
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isPending) console.log("isPending", isPending);
   if (error) return <div>Error: {error.message}</div>;
 
   return (
@@ -27,7 +27,7 @@ export const Replies = ({ comment }) => {
         >
           {showReplies ? "Ocultar" : "Ver"} respostas
         </button>
-        {showReplies && (
+        {showReplies && replies?.length && (
           <ul>
             {replies.map((reply) => (
               <li key={reply.id}>

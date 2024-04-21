@@ -1,6 +1,25 @@
 import db from "../../../../../../prisma/db";
 
+// export async function GET(_request, { params }) {
+//   const replies = await db.comment.findMany({
+//     where: {
+//       parentId: parseInt(params.id),
+//     },
+//     include: {
+//       author: true,
+//     },
+//   });
+//   return Response.json(replies);
+// }
+
+let failCount = 0;
+
 export async function GET(_request, { params }) {
+  if (failCount < 2) {
+    failCount += 1;
+    throw new Error("Simulated server error"); // Forçar falha
+  }
+
   const replies = await db.comment.findMany({
     where: {
       parentId: parseInt(params.id),

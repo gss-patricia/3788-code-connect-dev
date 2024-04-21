@@ -10,5 +10,6 @@ export const useFetchReplies = (commentId) => {
       }
       return response.json();
     },
+    retry: 3,
   });
 };
