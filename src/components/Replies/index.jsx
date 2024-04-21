@@ -4,16 +4,31 @@ import { useState } from "react";
 import styles from "./replies.module.css";
 import { Comment } from "../Comment";
 import { ReplyModal } from "../ModalReply";
-import { useFetchReplies } from "@/app/hooks/useFetchReplies";
+import { useFetchReplies, fetchReplies } from "@/hooks/useFetchReplies";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const Replies = ({ comment }) => {
   const [showReplies, setShowReplies] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const {
     data: replies,
     isPending,
     error,
-  } = useFetchReplies(showReplies ? comment.id : null); // passar o showReplies para o enabled
+  } = useFetchReplies(showReplies ? comment.id : null);
+
+  const prefetch = () => {
+    if (!showReplies) {
+      // Prefetch somente se showReplies for false
+      queryClient.prefetchQuery({
+        queryKey: ["replies", comment.id],
+        queryFn: () => fetchReplies(comment.id),
+        staleTime: 1000 * 60 * 5, // Considerar os dados "fresh" por 5 minutos,
+        retry: 3,
+      });
+    }
+  };
 
   if (isPending) console.log("isPending", isPending);
   if (error) return <div>Error: {error.message}</div>;
@@ -24,6 +39,7 @@ export const Replies = ({ comment }) => {
         <button
           className={styles.btn}
           onClick={() => setShowReplies(!showReplies)}
+          onMouseOver={prefetch}
         >
           {showReplies ? "Ocultar" : "Ver"} respostas
         </button>
