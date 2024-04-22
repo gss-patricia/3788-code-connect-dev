@@ -74,13 +74,30 @@ export const CardPost = ({ post, highlight, rating, category }) => {
     mutate: thumbsMutation,
     isPending,
     variables,
+    error: thumbsError,
+    isError: isErrorThumbs,
   } = useMutation({
-    mutationFn: (postData) => {
-      return fetch(`http://localhost:3000/api/thumbs`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData),
-      });
+    mutationFn: async (postData) => {
+      try {
+        const response = await fetch(`http://localhost:3000/api/thumbs`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(postData),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.message || "Something went wrong");
+        }
+
+        return response.json();
+      } catch (error) {
+        throw new Error(error.message || "Something went wrong");
+      }
+    },
+    onError: (error) => {
+      // Optionally handle errors globally here if needed
+      console.error("Error posting thumbs:", error.message);
     },
   });
 
@@ -95,6 +112,9 @@ export const CardPost = ({ post, highlight, rating, category }) => {
     onSettled: async () => {
       return await queryClient.invalidateQueries(["comments", post.id]);
     },
+    onError: (error) => {
+      console.log("error", error);
+    },
   });
 
   const onSubmitComment = (event) => {
@@ -107,13 +127,13 @@ export const CardPost = ({ post, highlight, rating, category }) => {
   // update optimistic via UI
   useEffect(() => {
     if (isPending && variables) {
-      debugger;
       post.likes = post.likes + 1;
     }
   }, [variables, isPending]);
 
   // update optimistic via UI
-  console.log("likes", post.likes);
+  console.log("error", thumbsError);
+  console.log("isErrorThumbs", isErrorThumbs);
 
   return (
     <article className={styles.card} style={{ width: highlight ? 993 : 486 }}>
