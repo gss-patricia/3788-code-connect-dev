@@ -12,7 +12,7 @@ export async function POST(request) {
   await delay(50);
 
   // Introduce a condition to simulate an error
-  if (slug === "sass-simplificando-o-css") {
+  if (slug === "vuejs-para-iniciantes") {
     // Assuming 'error-slug' triggers an error
     return new Response(
       JSON.stringify({ message: "Simulated error: Invalid slug" }),

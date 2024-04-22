@@ -21,7 +21,7 @@ const fetchPostRating = async ({ postId }) => {
 };
 
 export default function Home({ searchParams }) {
-  const page = parseInt(searchParams?.page || 1);
+  const currentPage = parseInt(searchParams?.page || 1);
   const searchTerm = searchParams?.q;
 
   const {
@@ -32,8 +32,8 @@ export default function Home({ searchParams }) {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["posts", page],
-    queryFn: () => fetchPosts({ page }),
+    queryKey: ["posts", currentPage],
+    queryFn: () => fetchPosts({ page: currentPage }),
   });
 
   const postRatingQueries = useQueries({
@@ -58,6 +58,7 @@ export default function Home({ searchParams }) {
     return <span>Loading...</span>;
   }
 
+  console.log("aaaaaaaaa", posts);
   return (
     <main className={styles.grid}>
       {posts?.data?.map((post) => (
@@ -69,13 +70,23 @@ export default function Home({ searchParams }) {
         />
       ))}
       <div className={styles.links}>
-        {prev && (
-          <Link href={{ pathname: "/", query: { page: prev, q: searchTerm } }}>
+        {posts?.prev && (
+          <Link
+            href={{
+              pathname: "/",
+              query: { page: posts?.prev, q: searchTerm },
+            }}
+          >
             Página anterior
           </Link>
         )}
-        {next && (
-          <Link href={{ pathname: "/", query: { page: next, q: searchTerm } }}>
+        {posts?.next && (
+          <Link
+            href={{
+              pathname: "/",
+              query: { page: posts?.next, q: searchTerm },
+            }}
+          >
             Próxima página
           </Link>
         )}
