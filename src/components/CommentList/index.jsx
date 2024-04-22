@@ -1,7 +1,6 @@
 import { Comment } from "../Comment";
 import { ReplyModal } from "../ModalReply";
 import { Replies } from "../Replies";
-
 import styles from "./commentlist.module.css";
 
 export const CommentList = ({ comments }) => {

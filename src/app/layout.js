@@ -1,5 +1,4 @@
 import { Prompt } from "next/font/google";
-import { ReactQueryProvider } from "./ReactQueryProvider";
 import { Aside } from "@/components/Aside";
 import "./globals.css";
 import { SearchForm } from "@/components/SearchForm";
@@ -17,20 +16,18 @@ const prompt = Prompt({
 
 export default function RootLayout({ children }) {
   return (
-    <ReactQueryProvider>
-      <html lang="pt-br" className={prompt.className}>
-        <body>
-          <div className="app-container">
-            <div>
-              <Aside />
-            </div>
-            <div className="main-content">
-              <SearchForm />
-              {children}
-            </div>
+    <html lang="pt-br" className={prompt.className}>
+      <body>
+        <div className="app-container">
+          <div>
+            <Aside />
           </div>
-        </body>
-      </html>
-    </ReactQueryProvider>
+          <div className="main-content">
+            <SearchForm />
+            {children}
+          </div>
+        </div>
+      </body>
+    </html>
   );
 }

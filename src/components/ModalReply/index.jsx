@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { Modal } from "../Modal";
 import styles from "./replymodal.module.css";
 import { Textarea } from "../Textarea";
@@ -15,33 +14,10 @@ export const ReplyModal = ({ comment, post }) => {
     modalRef.current.openModal();
   };
 
-  const replyMutation = useMutation({
-    mutationFn: (commentData) => {
-      return fetch(
-        `http://localhost:3000/api/comment/${comment.postId}/replies`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(commentData),
-        }
-      );
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries(["post", comment.id]); // ver o que fazer aqui
-    },
-  });
-
-  const onSubmitCommentReply = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const text = formData.get("text");
-    replyMutation.mutate({ comment, text });
-  };
-
   return (
     <>
       <Modal ref={modalRef}>
-        <form onSubmit={onSubmitCommentReply}>
+        <form>
           <div className={styles.body}>
             <Comment comment={comment} />
           </div>
