@@ -30,6 +30,7 @@ const PagePost = ({ params }) => {
   } = useQuery({
     queryKey: ["post", slug],
     queryFn: () => fetchPostBySlug({ slug }),
+    enabled: !!slug,
   });
 
   const { data: postRating } = useQuery({

@@ -1,11 +1,19 @@
 import db from "../../../../prisma/db";
 
+// Função que simula um delay
+function delay(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 export async function POST(request) {
-  const { id } = await request.json();
+  const { slug } = await request.json();
+
+  // Simula um delay antes de executar a atualização
+  await delay(300);
 
   await db.post.update({
     where: {
-      id: id,
+      slug,
     },
     data: {
       likes: {
