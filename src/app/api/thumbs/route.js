@@ -9,7 +9,7 @@ export async function POST(request) {
   const { slug } = await request.json();
 
   // Simula um delay antes de executar a atualização
-  await delay(300);
+  await delay(50);
 
   await db.post.update({
     where: {
@@ -25,7 +25,7 @@ export async function POST(request) {
   return new Response(
     JSON.stringify({ message: "Thumbs up incremented successfully!" }),
     {
-      status: 200,
+      status: 201,
       headers: {
         "Content-Type": "application/json",
       },

@@ -38,9 +38,6 @@ export const Replies = ({ comment }) => {
     }
   };
 
-  if (isPending) console.log("isPending", isPending);
-  if (error) return <div>Error: {error.message}</div>;
-
   return (
     <div className={styles.container}>
       <div className={styles.replies}>
