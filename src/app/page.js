@@ -1,9 +1,10 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import { useQuery, useQueries } from "@tanstack/react-query";
 import { CardPost } from "@/components/CardPost";
+
 import styles from "./page.module.css";
+import Link from "next/link";
 
 const fetchPosts = async ({ page }) => {
   const results = await fetch(`http://localhost:3000/api/posts?page=${page}`);
@@ -11,8 +12,16 @@ const fetchPosts = async ({ page }) => {
   return data;
 };
 
+const fetchPostRating = async ({ postId }) => {
+  const results = await fetch(
+    `http://localhost:3000/api/post?postId=${postId}`
+  );
+  const data = await results.json();
+  return data;
+};
+
 export default function Home({ searchParams }) {
-  const page = parseInt(searchParams?.page || 1);
+  const currentPage = parseInt(searchParams?.page || 1);
   const searchTerm = searchParams?.q;
 
   const {
@@ -23,11 +32,16 @@ export default function Home({ searchParams }) {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ["posts", page],
-    queryFn: () => fetchPosts({ page }),
+    queryKey: ["posts", currentPage],
+    queryFn: () => fetchPosts({ page: currentPage }),
   });
 
+  // Criar um mapa de ratings usando o ID do post como chave
   const ratingsAndCartegoriesMap = null;
+
+  if (isPending) {
+    return <span>Loading...</span>;
+  }
   return (
     <main className={styles.grid}>
       {posts?.data?.map((post) => (
@@ -39,13 +53,23 @@ export default function Home({ searchParams }) {
         />
       ))}
       <div className={styles.links}>
-        {prev && (
-          <Link href={{ pathname: "/", query: { page: prev, q: searchTerm } }}>
+        {posts?.prev && (
+          <Link
+            href={{
+              pathname: "/",
+              query: { page: posts?.prev, q: searchTerm },
+            }}
+          >
             Página anterior
           </Link>
         )}
-        {next && (
-          <Link href={{ pathname: "/", query: { page: next, q: searchTerm } }}>
+        {posts?.next && (
+          <Link
+            href={{
+              pathname: "/",
+              query: { page: posts?.next, q: searchTerm },
+            }}
+          >
             Próxima página
           </Link>
         )}

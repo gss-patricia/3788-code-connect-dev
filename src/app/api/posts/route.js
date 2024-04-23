@@ -2,7 +2,7 @@ import db from "../../../../prisma/db";
 import logger from "@/logger";
 
 export async function GET(request) {
-  const page = request.nextUrl.searchParams.get("page");
+  const page = parseInt(request.nextUrl.searchParams.get("page"));
   const searchTerm = request.nextUrl.searchParams.get("searchTerm");
 
   try {
