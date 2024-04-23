@@ -15,6 +15,8 @@ async function main() {
     create: author,
   });
 
+  console.log("ana", ana);
+
   console.log("Author created", ana);
 
   const posts = [
@@ -140,13 +142,38 @@ async function main() {
     },
   ];
 
-  posts.forEach(async (post) => {
-    await prisma.post.upsert({
+  for (const post of posts) {
+    const createdPost = await prisma.post.upsert({
       where: { slug: post.slug },
       update: {},
       create: post,
     });
-  });
+
+    // Verifique se é o post específico para adicionar comentários
+    if (createdPost.slug === "sass-simplificando-o-css") {
+      const comment = await prisma.comment.create({
+        data: {
+          text: "Primeiro comentario.",
+          createdAt: new Date("2024-04-21T16:27:51.170Z"),
+          updatedAt: new Date("2024-04-21T16:27:51.170Z"),
+          postId: createdPost.id, // Certifique-se de que este ID está correto
+          authorId: ana.id, // Certifique-se de que ana.id é definido anteriormente e está correto
+        },
+      });
+
+      // Adiciona um reply ao comentário
+      await prisma.comment.create({
+        data: {
+          text: "Resposta ao primeiro comentário.",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          postId: createdPost.id, // mesmo ID do post do comentário pai
+          parentId: comment.id, // ID do comentário ao qual este é uma resposta
+          authorId: ana.id, // ID do autor
+        },
+      });
+    }
+  }
 
   console.log("Seed OK");
 }

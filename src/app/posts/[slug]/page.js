@@ -35,7 +35,7 @@ const PagePost = ({ params }) => {
           <div className={styles.code}>
             <div dangerouslySetInnerHTML={{ __html: post.markdown }} />
           </div>
-          <CommentList comments={post.comments} />
+          <CommentList comments={post.comments} slug={slug} />
         </>
       )}
     </div>

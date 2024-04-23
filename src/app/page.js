@@ -21,7 +21,6 @@ export default function Home({ searchParams }) {
     next,
     error,
     isPending,
-    isError,
   } = useQuery({
     queryKey: ["posts", currentPage],
     queryFn: () => fetchPosts({ page: currentPage }),
