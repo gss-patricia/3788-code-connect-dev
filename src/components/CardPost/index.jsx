@@ -30,7 +30,7 @@ export const CardPost = ({ post, highlight, rating, category }) => {
             <p>{post.likes}</p>
           </form>
           <div>
-            <ModalComment onSubmit={onSubmitComment} />
+            <ModalComment />
             <p>{post.comments.length}</p>
           </div>
           {rating && (

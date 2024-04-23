@@ -1,20 +1,33 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { CardPost } from "@/components/CardPost";
 import styles from "./page.module.css";
-import Link from "next/link";
+
+const fetchPosts = async ({ page }) => {
+  const results = await fetch(`http://localhost:3000/api/posts?page=${page}`);
+  const data = await results.json();
+  return data;
+};
 
 export default function Home({ searchParams }) {
   const page = parseInt(searchParams?.page || 1);
   const searchTerm = searchParams?.q;
 
-  const posts = {
-    data: [],
-  };
+  const {
+    data: posts,
+    prev,
+    next,
+    error,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ["posts", page],
+    queryFn: () => fetchPosts({ page }),
+  });
 
-  const prev = null;
-  const next = null;
-
+  const ratingsAndCartegoriesMap = null;
   return (
     <main className={styles.grid}>
       {posts?.data?.map((post) => (
