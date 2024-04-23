@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Prompt } from "next/font/google";
 import { ReactQueryProvider } from "./ReactQueryProvider";
 import { Aside } from "@/components/Aside";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
               {children}
             </div>
           </div>
+          <ReactQueryDevtools initialIsOpen={false} position="left" />
         </body>
       </ReactQueryProvider>
     </html>
