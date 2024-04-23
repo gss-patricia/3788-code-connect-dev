@@ -13,7 +13,6 @@
   },
   "dependencies": {
     "@prisma/client": "^5.9.1",
-    "@tanstack/react-query": "^5.31.0",
     "next": "14.0.4",
     "prisma": "^5.9.1",
     "react": "^18",
