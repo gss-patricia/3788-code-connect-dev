@@ -150,7 +150,10 @@ async function main() {
     });
 
     // Verifique se é o post específico para adicionar comentários
-    if (createdPost.slug === "sass-simplificando-o-css") {
+    if (
+      createdPost.slug === "sass-simplificando-o-css" ||
+      createdPost.slug === "angular-primeiros-passos"
+    ) {
       const comment = await prisma.comment.create({
         data: {
           text: "Primeiro comentario.",
