@@ -14,7 +14,6 @@ export const Replies = ({ comment }) => {
         <button
           className={styles.btn}
           onClick={() => setShowReplies(!showReplies)}
-          onMouseOver={prefetch}
         >
           {showReplies ? "Ocultar" : "Ver"} respostas
         </button>
