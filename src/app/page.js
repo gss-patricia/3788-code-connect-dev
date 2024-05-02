@@ -2,6 +2,7 @@
 
 import { useQuery, useQueries } from "@tanstack/react-query";
 import { CardPost } from "@/components/CardPost";
+import { Spinner } from "@/components/Spinner";
 import styles from "./page.module.css";
 import Link from "next/link";
 
@@ -25,10 +26,10 @@ export default function Home({ searchParams }) {
 
   const {
     data: posts,
-    prev,
-    next,
     error,
     isPending,
+    isLoading,
+    isFetching,
   } = useQuery({
     queryKey: ["posts", currentPage],
     queryFn: () => fetchPosts({ page: currentPage }),
@@ -56,12 +57,18 @@ export default function Home({ searchParams }) {
 
   return (
     <main className={styles.grid}>
+      {isLoading && (
+        <div className={styles.spinner}>
+          <Spinner />
+        </div>
+      )}
       {posts?.data?.map((post) => (
         <CardPost
           key={post.id}
           post={post}
           rating={ratingsAndCartegoriesMap?.[post.id]?.rating}
           category={ratingsAndCartegoriesMap?.[post.id]?.category}
+          isFetching={isFetching}
         />
       ))}
       <div className={styles.links}>

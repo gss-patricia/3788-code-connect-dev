@@ -25,6 +25,36 @@ export async function GET(request) {
         category: "Front-end",
       },
       { id: 9, likes: 2, title: "Angular: First Steps", category: "Front-end" },
+      {
+        id: 8,
+        likes: 9,
+        title: "Introdução ao TypeScript",
+        category: "Front-end",
+      },
+      {
+        id: 7,
+        likes: 7,
+        title: "Webpack: Um Guia para Iniciantes",
+        category: "Front-end",
+      },
+      {
+        id: 5,
+        likes: 5,
+        title: "CSS Grid na Prática",
+        category: "Front-end",
+      },
+      {
+        id: 6,
+        likes: 6,
+        title: "Gerenciamento de Estado com Redux",
+        category: "Front-end",
+      },
+      {
+        id: 4,
+        likes: 4,
+        title: "Sass: Simplificando o CSS",
+        category: "Front-end",
+      },
     ];
 
     // Find the post by id

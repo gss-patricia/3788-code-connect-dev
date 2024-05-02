@@ -6,7 +6,7 @@ import Link from "next/link";
 import { ThumbsUpButton } from "./ThumbsUpButton";
 import { ModalComment } from "../ModalComment";
 
-export const CardPost = ({ post, highlight, rating, category }) => {
+export const CardPost = ({ post, highlight, rating, category, isFetching }) => {
   return (
     <article className={styles.card} style={{ width: highlight ? 993 : 486 }}>
       <header className={styles.header}>
@@ -26,7 +26,7 @@ export const CardPost = ({ post, highlight, rating, category }) => {
       <footer className={styles.footer}>
         <div className={styles.actions}>
           <form>
-            <ThumbsUpButton />
+            <ThumbsUpButton disabled={isFetching} />
             <p>{post.likes}</p>
           </form>
           <div>
@@ -34,9 +34,9 @@ export const CardPost = ({ post, highlight, rating, category }) => {
             <p>{post.comments.length}</p>
           </div>
           {rating && (
-            <div style={{ margin: "0 2px" }}>
+            <div style={{ margin: "0 3px" }}>
               <Star />
-              <p>{rating}</p>
+              <p style={{ marginTop: "1px" }}>{rating}</p>
             </div>
           )}
         </div>
