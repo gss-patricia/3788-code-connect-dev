@@ -11,7 +11,7 @@ const fetchPosts = async ({ page }) => {
   return data;
 };
 
-const fetchPostRating = async ({ postId }) => {
+export const fetchPostRating = async ({ postId }) => {
   const results = await fetch(
     `http://localhost:3000/api/post?postId=${postId}`
   );
@@ -46,9 +46,13 @@ export default function Home({ searchParams }) {
         : [],
   });
 
-  console.log("postRatingQueries", postRatingQueries);
-
-  const ratingsAndCartegoriesMap = null;
+  // Criar um mapa de ratings usando o ID do post como chave
+  const ratingsAndCartegoriesMap = postRatingQueries?.reduce((acc, query) => {
+    if (!query.isPending && query.data && query.data.id) {
+      acc[query.data.id] = query.data;
+    }
+    return acc;
+  }, {});
 
   return (
     <main className={styles.grid}>
