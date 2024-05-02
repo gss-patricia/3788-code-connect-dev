@@ -42,6 +42,7 @@ export default function Home({ searchParams }) {
         ? posts.data.map((post) => ({
             queryKey: ["postHome", post.id],
             queryFn: () => fetchPostRating({ postId: post.id }),
+            enabled: !!post.id,
           }))
         : [],
   });

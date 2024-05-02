@@ -18,8 +18,6 @@ export const fetchReplies = async (commentId) => {
 export const Replies = ({ comment }) => {
   const [showReplies, setShowReplies] = useState(false);
 
-  const queryClient = useQueryClient();
-
   const {
     data: replies,
     isPending,
@@ -29,7 +27,7 @@ export const Replies = ({ comment }) => {
   const prefetch = () => {
     if (!showReplies) {
       // Prefetch somente se showReplies for false
-      queryClient.prefetchQuery({
+      client.prefetchQuery({
         queryKey: ["replies", comment.id],
         queryFn: () => fetchReplies(comment.id),
         staleTime: 1000 * 60 * 5, // Considerar os dados "fresh" por 5 minutos,
