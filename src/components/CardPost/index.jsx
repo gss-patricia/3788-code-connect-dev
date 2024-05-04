@@ -26,7 +26,7 @@ export const CardPost = ({ post, highlight, rating, category, isFetching }) => {
       <footer className={styles.footer}>
         <div className={styles.actions}>
           <form>
-            <ThumbsUpButton disabled={isFetching} />
+            <ThumbsUpButton disable={isFetching} />
             <p>{post.likes}</p>
           </form>
           <div>
