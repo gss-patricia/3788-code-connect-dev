@@ -45,9 +45,13 @@ export default function Home({ searchParams }) {
         : [],
   });
 
-  console.log("postRatingQueries", postRatingQueries);
-
-  const ratingsAndCartegoriesMap = null;
+  // Criar um mapa de ratings usando o ID do post como chave
+  const ratingsAndCartegoriesMap = postRatingQueries?.reduce((acc, query) => {
+    if (!query.isPending && query.data && query.data.id) {
+      acc[query.data.id] = query.data;
+    }
+    return acc;
+  }, {});
 
   return (
     <main className={styles.grid}>
