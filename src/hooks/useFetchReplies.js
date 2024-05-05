@@ -1,16 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 
-export const useFetchReplies = (commentId) => {
+export const fetchReplies = async ({ commentId, slug }) => {
+  const response = await fetch(
+    `/api/comment/${commentId}/replies?slug=${slug}`
+  );
+  if (!response.ok) {
+    throw new Error("A resposta da rede não está ok");
+  }
+  return response.json();
+};
+
+export const useFetchReplies = ({ commentId, slug }) => {
   return useQuery({
-    queryKey: ["replies", commentId],
-    queryFn: async () => {
-      const response = await fetch(`/api/comment/${commentId}/replies`);
-      if (!response.ok) {
-        throw new Error("A resposta da rede não está ok");
-      }
-      return response.json();
-    },
-    retry: 3,
-    enabled: !!commentId, //garantindo que só será chamado quando tiver o commentId
+    queryKey: ["replies", commentId, slug],
+    queryFn: async () => fetchReplies({ commentId, slug }),
+    enabled: !!commentId && !!slug,
+    retry: 5,
+    //retryDelay: 1000,
   });
 };

@@ -14,8 +14,10 @@ import db from "../../../../../../prisma/db";
 
 let failCount = 0;
 
-export async function GET(_request, { params }) {
-  if (failCount < 2) {
+export async function GET(request, { params }) {
+  const slug = request.nextUrl.searchParams.get("slug");
+
+  if (failCount < 5 && slug === "sass-simplificando-o-css") {
     failCount += 1;
     throw new Error("Simulated server error"); // Forçar falha
   }
@@ -28,6 +30,8 @@ export async function GET(_request, { params }) {
       author: true,
     },
   });
+
+  failCount = 0;
   return Response.json(replies);
 }
 

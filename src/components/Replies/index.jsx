@@ -4,34 +4,27 @@ import { useState } from "react";
 import styles from "./replies.module.css";
 import { Comment } from "../Comment";
 import { ReplyModal } from "../ModalReply";
-import { useFetchReplies } from "@/hooks/useFetchReplies";
+import { useFetchReplies, fetchReplies } from "@/hooks/useFetchReplies";
 import { useQueryClient } from "@tanstack/react-query";
 
-export const fetchReplies = async (commentId) => {
-  const response = await fetch(`/api/comment/${commentId}/replies`);
-  if (!response.ok) {
-    throw new Error("A resposta da rede não está ok");
-  }
-  return response.json();
-};
+export const Replies = ({ comment, slug }) => {
+  const queryClient = useQueryClient();
 
-export const Replies = ({ comment }) => {
   const [showReplies, setShowReplies] = useState(false);
 
-  const {
-    data: replies,
-    isPending,
-    error,
-  } = useFetchReplies(showReplies ? comment.id : null);
+  const { data: replies } = useFetchReplies(
+    showReplies ? { commentId: comment.id, slug } : {}
+  );
 
   const prefetch = () => {
     if (!showReplies) {
       // Prefetch somente se showReplies for false
-      client.prefetchQuery({
-        queryKey: ["replies", comment.id],
-        queryFn: () => fetchReplies(comment.id),
+      queryClient.prefetchQuery({
+        queryKey: ["replies", comment.id, slug],
+        queryFn: () => fetchReplies({ commentId: comment.id, slug }),
         staleTime: 1000 * 60 * 5, // Considerar os dados "fresh" por 5 minutos,
-        retry: 3,
+        retry: 5,
+        retryDelay: 500,
       });
     }
   };

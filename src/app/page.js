@@ -2,7 +2,7 @@
 
 import { useQuery, useQueries } from "@tanstack/react-query";
 import { CardPost } from "@/components/CardPost";
-
+import { Spinner } from "@/components/Spinner";
 import styles from "./page.module.css";
 import Link from "next/link";
 
@@ -12,7 +12,7 @@ const fetchPosts = async ({ page }) => {
   return data;
 };
 
-const fetchPostRating = async ({ postId }) => {
+export const fetchPostRating = async ({ postId }) => {
   const results = await fetch(
     `http://localhost:3000/api/post?postId=${postId}`
   );
@@ -26,14 +26,12 @@ export default function Home({ searchParams }) {
 
   const {
     data: posts,
-    prev,
-    next,
-    error,
-    isPending,
-    isError,
+    isLoading,
+    isFetching,
   } = useQuery({
     queryKey: ["posts", currentPage],
     queryFn: () => fetchPosts({ page: currentPage }),
+    staleTime: 6000,
   });
 
   const postRatingQueries = useQueries({
@@ -55,19 +53,20 @@ export default function Home({ searchParams }) {
     return acc;
   }, {});
 
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  console.log("aaaaaaaaa", posts);
   return (
     <main className={styles.grid}>
+      {isLoading && (
+        <div className={styles.spinner}>
+          <Spinner />
+        </div>
+      )}
       {posts?.data?.map((post) => (
         <CardPost
           key={post.id}
           post={post}
           rating={ratingsAndCartegoriesMap?.[post.id]?.rating}
           category={ratingsAndCartegoriesMap?.[post.id]?.category}
+          isFetching={isFetching}
         />
       ))}
       <div className={styles.links}>

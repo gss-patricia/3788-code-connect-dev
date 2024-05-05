@@ -1,8 +1,9 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Prompt } from "next/font/google";
-import { ReactQueryProvider } from "./ReactQueryProvider";
 import { Aside } from "@/components/Aside";
 import "./globals.css";
 import { SearchForm } from "@/components/SearchForm";
+import { ReactQueryProvider } from "./ReactQueryProvider";
 
 export const metadata = {
   title: "Code Connect",
@@ -17,8 +18,8 @@ const prompt = Prompt({
 
 export default function RootLayout({ children }) {
   return (
-    <ReactQueryProvider>
-      <html lang="pt-br" className={prompt.className}>
+    <html lang="pt-br" className={prompt.className}>
+      <ReactQueryProvider>
         <body>
           <div className="app-container">
             <div>
@@ -29,8 +30,9 @@ export default function RootLayout({ children }) {
               {children}
             </div>
           </div>
+          <ReactQueryDevtools initialIsOpen={false} position="left" />
         </body>
-      </html>
-    </ReactQueryProvider>
+      </ReactQueryProvider>
+    </html>
   );
 }
