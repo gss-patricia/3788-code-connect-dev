@@ -9,7 +9,7 @@ export const CommentList = ({ comments, slug }) => {
       <h2>Comentários</h2>
       <ul>
         {comments.map((comment) => (
-          <li>
+          <li key={comment.id}>
             <Comment comment={comment} key={comment.id} />
             <ReplyModal comment={comment} />
             <Replies comment={comment} slug={slug} />
